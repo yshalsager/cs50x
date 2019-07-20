@@ -31,9 +31,31 @@ def get_form():
 
 @app.route("/form", methods=["POST"])
 def post_form():
-    return render_template("error.html", message="TODO")
+    name = request.form.get("name")
+    device = request.form.get("device")
+    payment = request.form.get("payment")
+    # check inputs
+    if not name:
+        return render_template("error.html",
+                               message="You must enter your Full Name!")
+    elif len(name.strip()) == 0:
+        return render_template("error.html",
+                               message="Your Full Name must not contain blank values!")
+    elif not device:
+        return render_template("error.html", message="You must select a device!")
+    elif not payment:
+        return render_template("error.html", message="You must select a payment method!")
+    # Once input is validated write it to csv file
+    with open('survey.csv', 'a') as fh:
+        writer = csv.writer(fh)
+        writer.writerow((name, device, payment))
+    return redirect('/sheet')  # Redirect user to sheet.html
 
 
 @app.route("/sheet", methods=["GET"])
 def get_sheet():
-    return render_template("error.html", message="TODO")
+    # Open survey.csv file and load it
+    with open('survey.csv', 'r') as input:
+        reader = csv.reader(input)
+        surveys = list(reader)
+    return render_template("sheet.html", surveys=surveys)

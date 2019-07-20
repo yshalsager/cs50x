@@ -2,23 +2,67 @@
 
 {% block main %}
 
-    <!-- http://getbootstrap.com/docs/4.1/content/typography/ -->
-    <h1 class="mb-3">Form</h1>
+<!-- http://getbootstrap.com/docs/4.1/content/typography/ -->
+<h1 class="mb-3">Form</h1>
 
-    <!-- http://getbootstrap.com/docs/4.1/components/forms/ -->
-    <form action="/form" method="post">
+<!-- http://getbootstrap.com/docs/4.1/components/forms/ -->
+<form action="/form" method="post" class="to-be-validated" novalidate>
 
-        <!-- TODO -->
+    <div class="form-group">
+        <input autocomplete="off" autofocus class="form-control" name="name" placeholder="Name" type="text">
+    </div>
 
-        <!-- http://getbootstrap.com/docs/4.1/components/buttons/ -->
-        <button class="btn btn-primary" type="submit">Submit</button>
+    <div class="form-group">
+        <select class="form-control" name="device">
+            <option disabled selected value="">Device</option>
+            <option value="OnePlus 6T">OnePlus 6T</option>
+            <option value="Mi 9T Pro">Mi 9T Pro</option>
+            <option value="Samsung S10">Samsung S10</option>
+            <option value="Huawei P30">Huawei P30</option>
+        </select>
+    </div>
 
-    </form>
+    <div class="form-group">
 
-    <script>
+        <div class="form-check">
+            <input class="form-check-input" id="Cash" name="payment" type="radio" value="Cash">
+            <label class="form-check-label" for="Cash">
+                Cash
+            </label>
+        </div>
 
-        /* TODO */
+        <div class="form-check">
+            <input class="form-check-input" id="Visa" name="payment" type="radio" value="Visa">
+            <label class="form-check-label" for="Visa">
+                Visa
+            </label>
+        </div>
 
-    </script>
+    </div>
+
+    <!-- http://getbootstrap.com/docs/4.1/components/buttons/ -->
+    <button class="btn btn-primary" type="submit">Submit</button>
+
+</form>
+
+
+<script>
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            // load the form to be validated
+            var forms = document.getElementsByClassName('to-be-validated');
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
 
 {% endblock %}
